@@ -1,0 +1,24 @@
+NOTICE — invariant-gen (ERC-4626 invariant catalog & harness)
+
+Authored and maintained by secrypta — https://secrypta.com
+
+This project is licensed under the MIT License (see LICENSE).
+
+All source in this repository is original work licensed under MIT:
+  - the ERC-4626 invariant catalog (catalog/erc4626.md);
+  - the Foundry harness (poc-erc4626/test/: Handler, InvariantBase, invariant_* suites,
+    repro tests);
+  - the demonstration vault contracts (poc-erc4626/src/: NaiveVault, OZVault, the Bug*Vault
+    targets, IVault, MockERC20).
+
+Third-party dependencies are NOT vendored in this repository. They are fetched at build
+time via `forge install` (see poc-erc4626/remappings.txt) and retain their own licenses:
+
+  - forge-std — Foundry standard library. License: MIT / Apache-2.0.
+    https://github.com/foundry-rs/forge-std
+
+  - OpenZeppelin Contracts — ERC20, ERC4626, IERC20, Math (used by the OZ-fixed
+    demonstration vault, OZVault). License: MIT.
+    https://github.com/OpenZeppelin/openzeppelin-contracts
+
+No third-party source code is distributed as part of this repository.
