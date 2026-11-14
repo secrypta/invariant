@@ -1,24 +1,44 @@
-NOTICE — invariant-gen (ERC-4626 invariant catalog & harness)
+NOTICE - invariant-gen (invariant catalogs & Foundry harnesses)
 
-Authored and maintained by secrypta — https://secrypta.com
+Authored and maintained by secrypta - https://secrypta.com
 
 This project is licensed under the MIT License (see LICENSE).
 
-All source in this repository is original work licensed under MIT:
+All source authored in this repository is original work licensed under MIT:
   - the ERC-4626 invariant catalog (catalog/erc4626.md);
-  - the Foundry harness (poc-erc4626/test/: Handler, InvariantBase, invariant_* suites,
-    repro tests);
+  - the cToken (Compound-V2) invariant catalog (catalog/ctoken.md);
+  - the Foundry harnesses (poc-erc4626/test/ and poc-ctoken/test/: Handler, InvariantBase,
+    invariant_* suites, repro tests);
   - the demonstration vault contracts (poc-erc4626/src/: NaiveVault, OZVault, the Bug*Vault
-    targets, IVault, MockERC20).
+    targets, IVault, MockERC20);
+  - the toy cToken stubs used by the cToken harness (poc-ctoken/src/).
 
-Third-party dependencies are NOT vendored in this repository. They are fetched at build
-time via `forge install` (see poc-erc4626/remappings.txt) and retain their own licenses:
+Third-party dependencies are vendored (so the builds are offline self-contained) and retain
+their own licenses, preserved alongside the sources:
 
-  - forge-std — Foundry standard library. License: MIT / Apache-2.0.
+  - forge-std v1.17.0 - Foundry standard library. License: MIT / Apache-2.0.
+    Vendored at poc-erc4626/vendor/ext/forge-std/ and poc-ctoken/vendor/ext/forge-std/
+    (see each LICENSE-MIT / LICENSE-APACHE).
     https://github.com/foundry-rs/forge-std
 
-  - OpenZeppelin Contracts — ERC20, ERC4626, IERC20, Math (used by the OZ-fixed
+  - OpenZeppelin Contracts v5.1.0 - ERC20, ERC4626, IERC20, Math (used by the OZ-fixed
     demonstration vault, OZVault). License: MIT.
+    Vendored at poc-erc4626/vendor/ext/oz/ (see its LICENSE).
     https://github.com/OpenZeppelin/openzeppelin-contracts
 
-No third-party source code is distributed as part of this repository.
+  - Venus Protocol - the real cToken (VToken) target of the cToken example, vendored verbatim
+    on two pinned commits to demonstrate the donation / exchange-rate-inflation bug and its fix.
+    License: BSD-3-Clause, Copyright 2020 Venus Labs, Inc. (Venus is a Compound-V2 fork; the
+    VToken / Exponential lineage is marked `@author Compound` in the original file headers, also
+    BSD-3-Clause). Original SPDX and author headers are preserved verbatim.
+      - vulnerable: @ commit 9c6467db09242330da2d3079200e14ae7e659adf (before PR #664)
+        vendored at poc-ctoken/vendor/vuln/
+      - fixed: @ commit e1b9231f3f5191be91eb70668cb4cd91e00abf0c (head of PR #664, VPD-808,
+        "Add internal cash to prevent donation attack") vendored at poc-ctoken/vendor/fix/
+    The full BSD-3-Clause license text is preserved at poc-ctoken/vendor/{vuln,fix}/vendor/LICENSE.
+    External interfaces/constants under poc-ctoken/vendor/{vuln,fix}/vendor_ext/ are ABI/constants
+    only (OpenZeppelin, MIT; @venusprotocol governance/oracle/solidity-utilities, BSD-3-Clause).
+    https://github.com/VenusProtocol/venus-protocol
+
+These vendored trees are verbatim third-party source and remain under their own licenses;
+all other source authored in this repository is original work under MIT.

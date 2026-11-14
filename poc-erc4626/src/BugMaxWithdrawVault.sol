@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title BugMaxWithdrawVault — VULNERABLE demo target of the "max* desync / withdrawal DoS" class
+/// @title BugMaxWithdrawVault - VULNERABLE demo target of the "max* desync / withdrawal DoS" class
 /// @notice A copy of NaiveVault (same correct rounding math), BUT with a per-tx withdrawal limit
 /// that maxWithdraw does NOT account for. maxWithdraw(a) honestly returns the full share value,
 /// but withdraw reverts if more than WITHDRAW_CAP is requested in a single transaction.

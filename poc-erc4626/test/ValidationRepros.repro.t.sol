@@ -29,7 +29,7 @@ contract ValidationRepros is Test {
         token.approve(v, type(uint256).max);
     }
 
-    // ===================== BUG 1 — rounding-direction (target I6) =====================
+    // ===================== BUG 1 - rounding-direction (target I6) =====================
     /// A round-trip deposit→redeem when the share price ≠ 1: on BugRounding it returns MORE than deposited.
     function _roundingRoundTrip(IVault v) internal returns (uint256 deposited, uint256 got) {
         _fund(A, 1000, address(v));
@@ -61,7 +61,7 @@ contract ValidationRepros is Test {
         assertLe(got, dep, "BUG1 control: round-trip izvlek na korrektnom vault");
     }
 
-    // ===================== BUG 2 — over-issuance (target I3) =====================
+    // ===================== BUG 2 - over-issuance (target I3) =====================
     function _sumRedeemableVsAssets(IVault v) internal returns (uint256 sumRedeemable, uint256 ta) {
         _fund(A, 1000, address(v));
         vm.prank(A);
@@ -84,7 +84,7 @@ contract ValidationRepros is Test {
         assertLe(red, ta, "BUG2 control: naive neplatezhesposoben (ne ozhidali)");
     }
 
-    // ===================== BUG 3 — max* desync / DoS (target I5) =====================
+    // ===================== BUG 3 - max* desync / DoS (target I5) =====================
     function test_bug3_maxWithdraw_reverts() public {
         BugMaxWithdrawVault v = new BugMaxWithdrawVault(token);
         uint256 amt = 2e21; // > WITHDRAW_CAP (1e21)
@@ -137,7 +137,7 @@ contract ValidationRepros is Test {
         attackerProfit = int256(token.balanceOf(A)) - int256(fundedA);
     }
 
-    // BUG 5 — security theater (min-deposit): the 2nd FAILING I2 target via a different mechanism.
+    // BUG 5 - security theater (min-deposit): the 2nd FAILING I2 target via a different mechanism.
     function test_bug5_minDeposit_profitable() public {
         BugMinDepositVault v = new BugMinDepositVault(token);
         // attack depth: attacker/victim >= MIN_DEPOSIT (1e6); large donation
@@ -155,7 +155,7 @@ contract ValidationRepros is Test {
         assertLe(p, int256(256), "BUG5 control: ataka pribylna na OZ(3) (fix sloman)");
     }
 
-    // BUG 4 — dead-shares: a SOUND protection. The same attack is profitable on Naive but LOSS-MAKING here → I2 is SILENT.
+    // BUG 4 - dead-shares: a SOUND protection. The same attack is profitable on Naive but LOSS-MAKING here → I2 is SILENT.
     function test_bug4_deadShares_defends() public {
         BugDeadSharesVault v = new BugDeadSharesVault(token);
         int256 p = _donationAttack(IVault(address(v)), 1, 1e21, 1e21); // classic: attacker 1 wei

@@ -4,16 +4,16 @@ pragma solidity ^0.8.24;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title BugRoundingVault — VULNERABLE demo target of the "rounding-direction" class (catalog validation)
+/// @title BugRoundingVault - VULNERABLE demo target of the "rounding-direction" class (catalog validation)
 /// @notice A copy of NaiveVault, but ALL rounding is flipped IN THE USER'S FAVOR:
 ///   - on the way in, shares are computed CEIL (the user gets MORE shares than the honest floor);
 ///   - on the way out, assets are computed CEIL (the vault returns MORE assets);
 ///   - previewMint/previewWithdraw are also skewed toward the user (pays less / burns less).
 /// A known bug class: rounding must always work AGAINST the user (in the vault's favor),
-/// otherwise a round-trip deposit→redeem returns more than deposited — free dust extraction.
+/// otherwise a round-trip deposit→redeem returns more than deposited - free dust extraction.
 /// The leak size is ≤1 ulp per operation (< SLACK), so it is caught not by a threshold (I7),
 /// but by DIRECTION (I6): previewRedeem(previewDeposit(a)) must be ≤ a; here it is > a.
-/// A toy, in-house contract — not from third-party repos. No virtual-shares offset (like NaiveVault).
+/// A toy, in-house contract - not from third-party repos. No virtual-shares offset (like NaiveVault).
 contract BugRoundingVault {
     using Math for uint256;
 
@@ -31,13 +31,13 @@ contract BugRoundingVault {
         return asset.balanceOf(address(this));
     }
 
-    // --- BUG: shares on the way in round-UP (Ceil) — in the user's favor (should be Floor) ---
+    // --- BUG: shares on the way in round-UP (Ceil) - in the user's favor (should be Floor) ---
     function convertToShares(uint256 assets) public view returns (uint256) {
         uint256 ts = totalSupply;
         return ts == 0 ? assets : assets.mulDiv(ts, totalAssets(), Math.Rounding.Ceil);
     }
 
-    // --- BUG: assets on the way out round-UP (Ceil) — in the user's favor (should be Floor) ---
+    // --- BUG: assets on the way out round-UP (Ceil) - in the user's favor (should be Floor) ---
     function convertToAssets(uint256 shares) public view returns (uint256) {
         uint256 ts = totalSupply;
         return ts == 0 ? shares : shares.mulDiv(totalAssets(), ts, Math.Rounding.Ceil);
@@ -47,13 +47,13 @@ contract BugRoundingVault {
         return convertToShares(assets); // Ceil (bug)
     }
 
-    // --- BUG: previewMint rounds DOWN (Floor) — the user pays FEWER assets (should be Ceil) ---
+    // --- BUG: previewMint rounds DOWN (Floor) - the user pays FEWER assets (should be Ceil) ---
     function previewMint(uint256 shares) public view returns (uint256) {
         uint256 ts = totalSupply;
         return ts == 0 ? shares : shares.mulDiv(totalAssets(), ts, Math.Rounding.Floor);
     }
 
-    // --- BUG: previewWithdraw rounds DOWN (Floor) — the user burns FEWER shares (should be Ceil) ---
+    // --- BUG: previewWithdraw rounds DOWN (Floor) - the user burns FEWER shares (should be Ceil) ---
     function previewWithdraw(uint256 assets) public view returns (uint256) {
         uint256 ts = totalSupply;
         return ts == 0 ? assets : assets.mulDiv(ts, totalAssets(), Math.Rounding.Floor);

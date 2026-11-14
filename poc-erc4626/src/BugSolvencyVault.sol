@@ -3,13 +3,13 @@ pragma solidity ^0.8.24;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-/// @title BugSolvencyVault — VULNERABLE demo target of the "over-issuance / solvency hole" class
+/// @title BugSolvencyVault - VULNERABLE demo target of the "over-issuance / solvency hole" class
 /// @notice A toy vault with a FIXED price of 1 share = 1 wei of asset (convert* 1:1).
 /// BUG: on every deposit it mints ONE share MORE than is backed by assets
 /// (previewDeposit = assets + 1), i.e. it issues unbacked shares. A known class:
 /// the sum of redeemable across holders exceeds the assets → the vault is insolvent.
 /// Caught by the strict I3 (solvency, assertLe WITHOUT tolerance): it fires already after the first deposit,
-/// whereas I2/I7 with a SLACK=256 tolerance let such "dust" (+1 wei/op) through — hence the strict
+/// whereas I2/I7 with a SLACK=256 tolerance let such "dust" (+1 wei/op) through - hence the strict
 /// conservation invariant is required separately from the profit threshold. In-house contract, not from third-party repos.
 contract BugSolvencyVault {
     IERC20 public immutable asset;

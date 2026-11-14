@@ -1,0 +1,49 @@
+# poc-ctoken - invariant-gen public example #2 (ctoken: Venus donation / exchange-rate inflation).
+# The harness in test/ + stubs in src/ were PRODUCED BY the generator (`invgen scan`), verbatim.
+# Two verbatim third-party targets (TIER-1): default profile = VULN (pre-fix), FOUNDRY_PROFILE=fix = FIX.
+# Only the `target/` root (and its venus//@openzeppelin//@venusprotocol/ sub-remaps) is swapped between sides.
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+solc = "0.8.25"
+optimizer = true
+optimizer_runs = 200
+remappings = [
+    "target/=vendor/vuln/",
+    "venus/=vendor/vuln/vendor/contracts/",
+    "@openzeppelin/=vendor/vuln/vendor_ext/oz/",
+    "@venusprotocol/=vendor/vuln/vendor_ext/",
+    "forge-std/=vendor/ext/forge-std/src/",
+]
+[profile.default.invariant]
+runs = 256
+depth = 64
+fail_on_revert = false
+[profile.default.fuzz]
+runs = 256
+seed = '0x4136'
+
+[profile.fix]
+src = "src"
+test = "test"
+out = "out-fix"
+libs = ["lib"]
+solc = "0.8.25"
+optimizer = true
+optimizer_runs = 200
+remappings = [
+    "target/=vendor/fix/",
+    "venus/=vendor/fix/vendor/contracts/",
+    "@openzeppelin/=vendor/fix/vendor_ext/oz/",
+    "@venusprotocol/=vendor/fix/vendor_ext/",
+    "forge-std/=vendor/ext/forge-std/src/",
+]
+[profile.fix.invariant]
+runs = 256
+depth = 64
+fail_on_revert = false
+[profile.fix.fuzz]
+runs = 256
+seed = '0x4136'

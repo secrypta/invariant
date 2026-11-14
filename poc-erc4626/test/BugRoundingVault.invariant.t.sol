@@ -6,9 +6,9 @@ import {IVault} from "../src/IVault.sol";
 import {MockERC20} from "../src/MockERC20.sol";
 import {BugRoundingVault} from "../src/BugRoundingVault.sol";
 
-/// Catalog validation, BUG 1 — rounding-direction (rounding in the user's favor).
-/// Target invariant — I6 (rounding DIRECTION). The leak is ≤1 ulp/op (< SLACK=256), so
-/// the I2 profit threshold and the I7 round-trip threshold do NOT catch it (SLACK absorbs the dust) — the direction probe catches it:
+/// Catalog validation, BUG 1 - rounding-direction (rounding in the user's favor).
+/// Target invariant - I6 (rounding DIRECTION). The leak is ≤1 ulp/op (< SLACK=256), so
+/// the I2 profit threshold and the I7 round-trip threshold do NOT catch it (SLACK absorbs the dust) - the direction probe catches it:
 /// previewRedeem(previewDeposit(a)) must be ≤ a; on this target, when the share price ≠ 1, it becomes > a.
 contract BugRoundingVaultInvariant is InvariantBase {
     function _deployVault(MockERC20 asset_) internal override returns (IVault) {

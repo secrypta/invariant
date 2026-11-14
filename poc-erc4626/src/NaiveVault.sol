@@ -4,10 +4,10 @@ pragma solidity ^0.8.24;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title NaiveVault — VULNERABLE demo target (D)
+/// @title NaiveVault - VULNERABLE demo target (D)
 /// @notice A minimal ERC-4626 WITHOUT a virtual-shares offset. totalAssets() = the asset balance held by the contract,
 /// so a direct transfer (donation) inflates the share price → first-depositor/donation inflation attack.
-/// A toy, in-house contract — not from third-party repos. Allowance on withdrawal is not checked (owner==msg.sender in the harness).
+/// A toy, in-house contract - not from third-party repos. Allowance on withdrawal is not checked (owner==msg.sender in the harness).
 contract NaiveVault {
     using Math for uint256;
 
@@ -59,7 +59,7 @@ contract NaiveVault {
     function maxWithdraw(address owner) public view virtual returns (uint256) { return convertToAssets(balanceOf[owner]); }
     function maxRedeem(address owner) public view virtual returns (uint256) { return balanceOf[owner]; }
 
-    // --- actions (preview is computed BEFORE the incoming transferFrom — as in canonical ERC-4626) ---
+    // --- actions (preview is computed BEFORE the incoming transferFrom - as in canonical ERC-4626) ---
     function deposit(uint256 assets, address receiver) public virtual returns (uint256 shares) {
         shares = previewDeposit(assets);
         asset.transferFrom(msg.sender, address(this), assets);

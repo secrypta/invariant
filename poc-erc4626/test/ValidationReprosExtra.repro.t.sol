@@ -13,7 +13,7 @@ import {BugRedeemCapVault} from "../src/BugRedeemCapVault.sol";
 import {BugSolvencyMintVault} from "../src/BugSolvencyMintVault.sol";
 import {BugSolvencyBurnVault} from "../src/BugSolvencyBurnVault.sol";
 
-/// @title Extra-mechanism — deterministic repros of the SECOND/THIRD mechanisms per invariant (ERC-4626). Independent of the fuzzer.
+/// @title Extra-mechanism - deterministic repros of the SECOND/THIRD mechanisms per invariant (ERC-4626). Independent of the fuzzer.
 /// Each: the target property is violated on the vulnerable target, holds on the correct one (OZ offset=3 / honest baseline).
 contract ValidationReprosExtra is Test {
     MockERC20 internal token;
@@ -30,7 +30,7 @@ contract ValidationReprosExtra is Test {
         token.approve(vault, type(uint256).max);
     }
 
-    // ===== I6 (2nd) — BugPreviewDepositLies: previewDeposit (ceil) lies vs actual issuance (floor) =====
+    // ===== I6 (2nd) - BugPreviewDepositLies: previewDeposit (ceil) lies vs actual issuance (floor) =====
     function test_I6_depositLies_previewOverstates() public {
         BugPreviewDepositLiesVault v = new BugPreviewDepositLiesVault(token);
         // create a share price != 1: deposit 1000, then donate 500 -> ta=1500, ts=1000
@@ -61,7 +61,7 @@ contract ValidationReprosExtra is Test {
         assertLe(quote, got, "I6 control: previewDeposit zavysil na OZ(3)");
     }
 
-    // ===== I6 (3rd) — BugPreviewRedeemLies: previewRedeem (x1.01) lies vs actual payout =====
+    // ===== I6 (3rd) - BugPreviewRedeemLies: previewRedeem (x1.01) lies vs actual payout =====
     function test_I6_redeemLies_previewOverstates() public {
         BugPreviewRedeemLiesVault v = new BugPreviewRedeemLiesVault(token);
         _fund(LP, 1000, address(v));
@@ -89,7 +89,7 @@ contract ValidationReprosExtra is Test {
         assertLe(quote, got + 1, "I6 control: previewRedeem zavysil na OZ(3)");
     }
 
-    // ===== I5 (2nd) — BugMaxRedeemLies: redeem(maxRedeem) reverts =====
+    // ===== I5 (2nd) - BugMaxRedeemLies: redeem(maxRedeem) reverts =====
     function test_I5_maxRedeemLies_reverts() public {
         BugMaxRedeemLiesVault v = new BugMaxRedeemLiesVault(token);
         _fund(LP, 1000, address(v));
@@ -113,7 +113,7 @@ contract ValidationReprosExtra is Test {
         assertTrue(ok, "I5b control: redeem(maxRedeem) revert na OZ(3)");
     }
 
-    // ===== I5 (3rd) — BugRedeemCap: redeem(maxRedeem) reverts due to a per-tx cap =====
+    // ===== I5 (3rd) - BugRedeemCap: redeem(maxRedeem) reverts due to a per-tx cap =====
     function test_I5_redeemCap_reverts() public {
         BugRedeemCapVault v = new BugRedeemCapVault(token);
         uint256 big = 2e21; // > REDEEM_CAP=1e21
@@ -139,7 +139,7 @@ contract ValidationReprosExtra is Test {
         assertTrue(ok, "I5b control: redeem(maxRedeem) revert na OZ(3)");
     }
 
-    // ===== I3 (2nd) — BugSolvencyMint: mint prints an unbacked share =====
+    // ===== I3 (2nd) - BugSolvencyMint: mint prints an unbacked share =====
     function test_I3_solvencyMint_overIssue() public {
         BugSolvencyMintVault v = new BugSolvencyMintVault(token);
         _fund(ATK, 1000, address(v));
@@ -158,7 +158,7 @@ contract ValidationReprosExtra is Test {
         assertLe(v.previewRedeem(v.balanceOf(ATK)), v.totalAssets(), "I3 control: neplatezhesposobnost na Naive");
     }
 
-    // ===== I3 (3rd) — BugSolvencyBurn: withdrawal leaves a phantom share =====
+    // ===== I3 (3rd) - BugSolvencyBurn: withdrawal leaves a phantom share =====
     function test_I3_solvencyBurn_phantomShare() public {
         BugSolvencyBurnVault v = new BugSolvencyBurnVault(token);
         _fund(ATK, 1000, address(v));

@@ -4,11 +4,11 @@ pragma solidity ^0.8.24;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title BugMinDepositVault — VULNERABLE demo target: SECURITY THEATER against donation inflation (2nd I2 target)
+/// @title BugMinDepositVault - VULNERABLE demo target: SECURITY THEATER against donation inflation (2nd I2 target)
 /// @notice A copy of NaiveVault with a "protection" in the form of a minimum deposit (require assets >= MIN_DEPOSIT).
 /// The author reasoned: "banning a 1-wei deposit will stop the first-depositor attack". But the share math
 /// is NOT touched (bare naive), so the attacker simply deposits MIN_DEPOSIT (not 1 wei), donates and
-/// rounds the victim's deposit to zero — the attack goes through. This is a DIFFERENT broken protection mechanism
+/// rounds the victim's deposit to zero - the attack goes through. This is a DIFFERENT broken protection mechanism
 /// than bare NaiveVault (there is a "protection", but it misses the point) and than the weak dead-shares/offset=0.
 /// The point is to confirm that the I2 gate catches the CLASS "attacker profit", not a specific implementation:
 /// I2 fails here too and holds on OZVault(offset=3). In-house contract, not from third-party repos.

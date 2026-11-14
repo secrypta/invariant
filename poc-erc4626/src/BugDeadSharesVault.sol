@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title BugDeadSharesVault — VULNERABLE demo target: WEAK protection against donation inflation (an I2 backstop)
+/// @title BugDeadSharesVault - VULNERABLE demo target: WEAK protection against donation inflation (an I2 backstop)
 /// @notice A copy of NaiveVault, but with a REAL yet INSUFFICIENT protection: on the first deposit it mints
 /// a fixed minimum of "dead" shares to address(0) (Uniswap V2 MINIMUM_LIQUIDITY style), instead of
 /// OZ's scalable virtual shares. The fixed DEAD shares are negligible when the attacker himself
@@ -17,7 +17,7 @@ contract BugDeadSharesVault {
     IERC20 public immutable asset;
     uint8 public constant decimals = 18;
 
-    /// Fixed minimum of "dead" shares (one-time, does NOT scale — that is the weakness).
+    /// Fixed minimum of "dead" shares (one-time, does NOT scale - that is the weakness).
     uint256 public constant DEAD_SHARES = 1e3;
 
     uint256 public totalSupply;

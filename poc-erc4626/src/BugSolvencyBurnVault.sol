@@ -3,10 +3,10 @@ pragma solidity ^0.8.24;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-/// @title BugSolvencyBurnVault — 3rd I3 mechanism (over-issuance, via the burn branch).
+/// @title BugSolvencyBurnVault - 3rd I3 mechanism (over-issuance, via the burn branch).
 /// @notice Fixed 1:1 price, but on withdrawal 1 share LESS is burned than is paid out in assets: redeem/withdraw
 /// return the full value but _burn(shares−1) → a "phantom" share stays with the owner, Σ shares > assets.
-/// A different mechanism than BugSolvency (deposit) and BugSolvencyMint (mint) — the leak is on the BURN. Dust (+1/withdrawal) ⇒
+/// A different mechanism than BugSolvency (deposit) and BugSolvencyMint (mint) - the leak is on the BURN. Dust (+1/withdrawal) ⇒
 /// the strict I3 catches it, I2 (SLACK) lets it through. Caught by I3 (Σ redeemable > totalAssets). In-house contract, not from third-party repos.
 contract BugSolvencyBurnVault {
     IERC20 public immutable asset;

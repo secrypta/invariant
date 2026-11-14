@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-/// @title BugSolvencyMintVault — 2nd I3 mechanism (over-issuance, via the mint branch).
+/// @title BugSolvencyMintVault - 2nd I3 mechanism (over-issuance, via the mint branch).
 /// @notice Fixed 1:1 price (like BugSolvencyVault), but the unbacked share is printed on the MINT branch (not deposit):
 /// mint(shares) pulls `shares` assets but mints `shares+1` shares. Σ shares > assets → insolvency.
 /// Differs from BugSolvencyVault (+1 on deposit there). The dust leak (+1/mint) ⇒ the strict I3 catches it, the profit

@@ -25,7 +25,7 @@ contract DonationAttackRepro is Test {
 
     /// Returns the attacker profit (assets) and the victim loss (assets).
     function _run(IVault v) internal returns (int256 attackerProfit, uint256 victimLoss) {
-        // 1) attacker — first depositor: 1 wei
+        // 1) attacker - first depositor: 1 wei
         _fund(ATTACKER, 1);
         vm.prank(ATTACKER);
         token.approve(address(v), type(uint256).max);
@@ -51,7 +51,7 @@ contract DonationAttackRepro is Test {
             v.redeem(sh, ATTACKER, ATTACKER);
         }
 
-        // accounting: attacker was credited 1 + DONATION; in hand now — only what was pulled out of the vault
+        // accounting: attacker was credited 1 + DONATION; in hand now - only what was pulled out of the vault
         uint256 attackerIn = 1 + DONATION;
         uint256 attackerOut = token.balanceOf(ATTACKER);
         attackerProfit = int256(attackerOut) - int256(attackerIn);
@@ -73,7 +73,7 @@ contract DonationAttackRepro is Test {
 
     function test_repro_oz0_weakfix() public {
         token = new MockERC20();
-        OZVault v = new OZVault(token, 0); // offset=0 — a weak fix
+        OZVault v = new OZVault(token, 0); // offset=0 - a weak fix
         (int256 p, uint256 loss) = _run(IVault(address(v)));
         console2.log("OZ(0)  attacker profit (assets):");
         console2.logInt(p);
@@ -85,7 +85,7 @@ contract DonationAttackRepro is Test {
 
     function test_repro_oz3_safe() public {
         token = new MockERC20();
-        OZVault v = new OZVault(token, 3); // offset=3 — the correct fix
+        OZVault v = new OZVault(token, 3); // offset=3 - the correct fix
         (int256 p, uint256 loss) = _run(IVault(address(v)));
         console2.log("OZ(3)  attacker profit (assets):");
         console2.logInt(p);

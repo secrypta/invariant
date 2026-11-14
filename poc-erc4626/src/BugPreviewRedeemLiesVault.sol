@@ -5,8 +5,8 @@ import {NaiveVault} from "./NaiveVault.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title BugPreviewRedeemLiesVault — 3rd I6 mechanism (preview-accuracy / direction).
-/// @notice The redeem payout is honest (floor), BUT the view quote `previewRedeem` is overstated (×1.01) — it lies in the user's favor,
+/// @title BugPreviewRedeemLiesVault - 3rd I6 mechanism (preview-accuracy / direction).
+/// @notice The redeem payout is honest (floor), BUT the view quote `previewRedeem` is overstated (×1.01) - it lies in the user's favor,
 /// diverging from the actual payout. Integrators/routers that trust previewRedeem receive less than promised
 /// (an EIP-4626 violation: preview must not overstate). Differs from BugRounding (whole math) and
 /// BugPreviewDepositLies (quote on the way in). Caught by I6 (Handler: previewRedeem(sh) > actual payout + 1).
@@ -22,7 +22,7 @@ contract BugPreviewRedeemLiesVault is NaiveVault {
     }
 
     function redeem(uint256 shares, address receiver, address owner) public override returns (uint256 assets) {
-        assets = convertToAssets(shares); // honest payout (floor) — DIVERGES from previewRedeem (×1.01)
+        assets = convertToAssets(shares); // honest payout (floor) - DIVERGES from previewRedeem (×1.01)
         _burn(owner, shares);
         asset.transfer(receiver, assets);
     }
